@@ -8,7 +8,7 @@ import (
 
 func (m *Model) View() string {
 	styles := DefaultStyle()
-	var builder strings.Builder // Declare the StringBuilder
+	var builder strings.Builder
 	linesRendered := 0
 
 	for i, r := range m.Content {
@@ -22,6 +22,7 @@ func (m *Model) View() string {
 		if i == m.CursorPosition {
 			if string(r) == "\n" {
 				m.CursorPosition++
+				m.Input = append(m.Input, r)
 			}
 			m.Cursor.SetChar(string(r))
 			builder.WriteString(m.Cursor.View())
