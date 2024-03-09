@@ -3,6 +3,7 @@ package typing
 import (
 	"strings"
 
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -19,6 +20,12 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
+		case key.Matches(msg, m.Keys.Backspace):
+			if m.CursorPosition > 0 {
+				m.Input = append(m.Input[:m.CursorPosition-1], m.Input[m.CursorPosition:]...)
+				m.CursorPosition--
+			}
+
 		case strings.Contains(VALID_RUNES, msg.String()):
 			runeArray := []rune(msg.String())
 			m.Input = append(m.Input, runeArray...)
