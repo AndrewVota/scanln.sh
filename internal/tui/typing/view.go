@@ -26,7 +26,13 @@ func (m *Model) View() string {
 			m.Cursor.SetChar(string(r))
 			builder.WriteString(m.Cursor.View())
 		} else {
-			builder.WriteString(styles.GhostText.Render(string(r)))
+			if len(m.Input) > i && m.Input[i] == r {
+				builder.WriteString(styles.CorrectText.Render(string(r)))
+			} else if len(m.Input) > i && m.Input[i] != r {
+				builder.WriteString(styles.IncorrectText.Render(string(r)))
+			} else {
+				builder.WriteString(styles.GhostText.Render(string(r)))
+			}
 		}
 	}
 
@@ -41,8 +47,8 @@ type Style struct {
 
 func DefaultStyle() Style {
 	const GHOST_TEXT_COLOR = "#A1A1A1"
-	const CORRECT_TEXT_COLOR = "#FCAF50"
-	const INCORRECT_TEXT_COLOR = "F44336"
+	const CORRECT_TEXT_COLOR = "#00FF00"
+	const INCORRECT_TEXT_COLOR = "#F44336"
 
 	return Style{
 		GhostText:     lipgloss.NewStyle().Foreground(lipgloss.Color(GHOST_TEXT_COLOR)),
